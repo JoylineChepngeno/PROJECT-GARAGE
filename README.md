@@ -1,15 +1,7 @@
 # Garage Development Approach
 
-**Approach one**
-
-Great question 👌 — knowing **where to start and how** is what makes the difference between building a clean backend and ending up with spaghetti code. Since you’re building a **modular monolith (Spring Boot)** for your Garage System, here’s the roadmap with reasoning, so you understand **what to do first, why, and in what order**.
-
----
-
+**Approach**
 **🔹 Step 1: Lay the Foundation**
-
-Before adding business logic, you need the base infrastructure.
-
 **What to do:**
 
 1. **Create a new Spring Boot project** (via Spring Initializr).
