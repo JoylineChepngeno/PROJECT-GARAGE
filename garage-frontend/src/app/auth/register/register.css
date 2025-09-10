@@ -1,0 +1,138 @@
+/* Page wrapper centers everything */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Sticky heading */
+.page-wrapper h2 {
+  position: sticky;
+  top: 0;
+  background: #4b4747;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #e6e6e6;
+  border-bottom: 1px solid #333;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Card */
+.form-container {
+  background:  #b48077;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;   /* wider so 2-column fits */
+  box-shadow: 0 8px 20px rgba(199, 33, 33, 0.4);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Two-column row */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Form groups */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+/* Inputs */
+.form-group input {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #574040;
+  color: #fff;
+}
+
+/* Labels */
+.form-group label {
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+/* Radio options */
+.role-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.role-options label {
+  color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Button */
+button {
+  background: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+button:disabled {
+  background: #c4bdbd;
+  cursor: not-allowed;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+/* Error text */
+.error {
+  color: red;
+  font-size: 0.9em;
+}
+
+/* Error box */
+.error-box {
+  color: #fff;
+  background-color: #b22222;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Spinner */
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid navy;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
