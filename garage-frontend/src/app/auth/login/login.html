@@ -1,1 +1,30 @@
-<p>login works!</p>
+<h4> Welcome ddry </h4>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <div>
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Enter your email">
+
+    </div>
+
+    <div>
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Password">
+        
+        
+    </div>
+
+   <button  type="submit" [disabled]="isLoading || loginForm.invalid">  <!--no need to event bind-->
+
+    @if (!isLoading) {
+    <span >LOG IN</span>}
+
+    @if (isLoading) {
+    <span class="spinner"></span>}
+  </button>
+  
+</form>
+
+@if (errorMessage){
+<p style="color: rgb(61, 13, 13);">{{errorMessage}}</p>
+}
