@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ɵInternalFormsSharedModule } from "@angular/forms";
 
 @Component({
   selector: 'app-forgot-password',
-  imports: [],
+  imports: [ɵInternalFormsSharedModule],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.css'
 })
