@@ -1,0 +1,93 @@
+@if(currentStep >= 0){
+
+<div class="progress-container">
+    <div class="progress-bar"  [style.width.%]="progress"></div>
+</div>
+
+<!--Step Indicator-->
+<div class="step-indicator">
+Step {{currentStep}} / {{maxSteps}}
+</div>
+
+<!--Stepper navigation-->
+<div class="stepper">
+
+    <div
+    *ngFor="let step of steps; let i = index"
+    (click)="goToStep(i)"
+    [class.active]="i === currentStep"
+    [class.completed]="i < currentStep"
+    >
+
+    {{i + 1}}. {{step}}
+
+    </div>
+
+</div>
+
+<!--Step content-->
+
+<div class="step-content">
+    @switch (currentStep) {
+    
+    @case (0) {
+        <div class="form-card">
+      <app-personal-details [group]="personalForm"></app-personal-details>
+      </div>
+    }
+
+    @case (1) {
+
+     <div class="form-card">
+        <app-vehicle-details [group]="vehicleForm"></app-vehicle-details>
+      </div>
+    }
+
+    @case (2) {
+        <div class="form-card">
+        <app-service-details [group]="historyForm"></app-service-details>
+        </div>
+    }
+
+  }
+</div>
+
+<!--Navigation buttons-->
+<div class="nav-buttons">
+    <button (click)="prevStep()" [disabled]="currentStep === -1">Back</button>
+
+    @if (currentStep < steps.length - 1) {
+    <button  (click)="nextStep()">Next</button>
+    }
+
+    @if (currentStep === steps.length -1) {
+    <button (click)="submit()" >Finish</button>}
+
+</div>}
+
+<!--Intro Screen-->
+
+@if (currentStep === -1) {
+<div  class="intro-screen">
+    <div class="left">
+        <h2>Get started with garage</h2>
+        <p>Let's get started in 3 quick steps</p>
+       
+    </div>
+
+
+
+<div class="right">
+    <ol type="1">
+        <li>Personal Information</li>
+        <li>Vehicle Information</li>
+        <li>Service History</li>
+    </ol>
+     <button (click)="nextStep()">Start Setup</button>
+    
+
+
+</div>
+
+</div>
+}
