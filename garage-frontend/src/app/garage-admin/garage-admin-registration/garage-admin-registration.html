@@ -1,0 +1,99 @@
+<form [formGroup]="form"  >
+
+<div class="container" id="intro-content">
+<div class="left">
+    <h2>Right on track setting up <br>
+         your garage</h2>
+    <img src="" alt="car on path">
+
+</div>
+
+<div class="right">
+
+    <h6>6 STEPS</h6>
+    <ol type="1">
+        <li>Business Information</li>
+        <li>Operational Details</li>
+        <li>Services</li>
+        <li>Finance Details</li>
+        <li>Verify Business Documents</li>
+        <li>Review and Submit</li>
+    </ol>
+
+
+<button (click)="nextStep()">GET STARTED</button>
+
+</div>
+
+
+</div>
+
+<!--Next step after intro-->
+
+@if(currentStep >=-1) {
+   
+
+@switch (currentStep) {
+
+    @case (0) {
+        <div>
+            <app-business-information [group]="businessForm"></app-business-information>
+        </div>
+    }
+
+    @case (1) {
+        <div>
+
+            <app-operational-details [group]="operationalForm"></app-operational-details>
+        
+        </div>
+    }
+
+    @case (2) {
+        <div>
+            <app-financial-info [group]="finacialForm"></app-financial-info>
+        </div>
+    }
+
+    @case (3) {
+        <div>
+            <app-service-details [group]="servicesForm"></app-service-details>
+        </div>
+    }
+ 
+    @case (4) {
+        <div>
+            <app-verification-docs  [group]="documentsForm" ></app-verification-docs>
+        </div>
+    }
+
+    @case (5) {
+        <div>
+            <app-review-submit></app-review-submit>
+            
+        </div>
+    }
+
+    
+
+}
+
+<!--Navigation buttons-->
+<div class="nav-buttons">
+    <button (click)="prevStep()" [disabled]="currentStep === -1">Back</button>
+
+    @if (currentStep < steps.length - 1) {
+    <button  (click)="nextStep()">Next</button>
+    }
+
+    @if (currentStep === steps.length -1) {
+    <button (click)="submit()" >Finish</button>}
+
+</div>
+
+
+}
+</form>
+
+
+
