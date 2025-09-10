@@ -1,0 +1,143 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { PersonalInformation } from "./personal-information";
+import { fromReadableStreamLike } from 'rxjs/internal/observable/innerFrom';
+import { ProfessionalQualifications } from './professional-qualifications';
+import { ReviewSubmit } from './review-submit';
+import { SkillsAvailability } from './skills-availability';
+import { VerificationDocuments } from './verification-documents';
+
+@Component({
+  selector: 'app-mechanic-registration',
+  imports: [CommonModule, PersonalInformation, ProfessionalQualifications,
+    ReviewSubmit,SkillsAvailability, VerificationDocuments ],
+  
+  templateUrl: './mechanic-registration.html',
+  styleUrl: './mechanic-registration.css'
+})
+export class MechanicRegistration implements OnInit {
+
+  form: FormGroup;
+  currentStep = -1;
+  maxSteps= 5;
+  steps = ['Personal Information', 'Professional Qualification', 'Skills and Availability', 'Verification Documents', 'Review and Submit']
+
+  constructor(private mechanicRegister:FormBuilder){
+
+    this.form=this.mechanicRegister.group({
+      personal:this.mechanicRegister.group({
+        profilePic: [null],
+        nationalIdNumber:[0,Validators.required],
+        alternativePhone:[0, [Validators.pattern(/^[0-9]{10}$/)]],
+        physicalAddress:['', Validators.required],
+        emergencyContactName: ['', Validators.required],
+        emergencyContactNumber:['',Validators.required]
+
+
+      }),
+
+      professional: this.mechanicRegister.group({
+        yearsofExperience:['',Validators.required],
+        areasofSpecialization:['',Validators.required],
+        bio:['',Validators.required]
+
+      }),
+
+      skills:this.mechanicRegister.group({
+        vehicleBrands:['',Validators.required],
+        garageLinnked:['',Validators.required],
+        availability:['', Validators.required],
+       }),
+
+       documents:this.mechanicRegister.group({
+        nationalID:['', Validators.required],
+        professionalCertfificate:['',Validators.required],
+        anyRelevantCertificate: [''],
+        policeClearanceCertficate:['', Validators.required]
+
+       }),
+
+       review: this.mechanicRegister.group({
+        fromReadableStreamLike
+       })
+
+    });
+
+  }
+
+
+get personalForm(): FormGroup {
+  return this.form.get('personal') as FormGroup;
+}
+
+get professionalForm(): FormGroup{
+  return this.form.get('professional') as FormGroup;
+}
+
+get skillslForm(): FormGroup {
+  return this.form.get('skills') as FormGroup;
+}
+
+get documentsForm(): FormGroup {
+  return this.form.get('documents') as FormGroup;
+}
+
+ngOnInit(){
+  //load saved progess
+  if(typeof localStorage !== 'undefined'){
+   const saved = localStorage.getItem('mechanicSetup');
+   if (saved){
+    this.form.patchValue(JSON.parse(saved))
+   }
+  
+
+   // Save progress as user types
+  this.form.valueChanges.subscribe(value => {
+    localStorage.setItem('mechanicSetup', JSON.stringify(value));
+  });
+}
+  
+}
+
+  get progress(){
+
+    if (this.currentStep < 0) return 0;
+    return((this.currentStep+1)/this.maxSteps)*100;
+
+  }
+
+  //Onclick functions
+
+  nextStep(){
+    if(this.currentStep < this.maxSteps - 1) this.currentStep++;
+  }
+// not sure if the above line starts from intro
+
+  prevStep(){
+    if(this.currentStep>-1) {this.currentStep--;}
+  }
+
+  goToStep(step: number){ 
+    this.currentStep=step;
+
+  }
+//below is already on ngOnInit
+  //saveProgress(){
+   // localStorage.setItem('ownerSetup', JSON.stringify(this.form.value));
+  //}
+
+  submit(){
+    if (this.form.valid){
+      console.log('Final Submission', this.form.value)
+     localStorage.removeItem('ownerSetup'); //clear after submission
+    //todo: send to backend
+    } else{
+      alert('Please complete all required fields')
+    }
+  }
+
+
+
+
+}

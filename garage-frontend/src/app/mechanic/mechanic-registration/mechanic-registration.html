@@ -1,0 +1,112 @@
+@if(currentStep === -1) {
+<div class="intro-screen">
+
+
+    <h2>Mechanic Profile Setup</h2>
+    <p>Complete your profile to start receiving job<br>
+     assignments</p>
+
+    <div class="right-side-0f-page">
+        <ol>
+            <li>Personal Information</li>
+            <li>Professional Qualifications</li>
+            <li>Skills and availability</li>
+            <li>Verificcation documents</li>
+            <li>Review and submit</li>
+        </ol>
+        <button (click)="nextStep()">Start Setup</button>
+    </div>
+
+</div>}
+
+<!--Everything down here should show after intro screen-->
+
+@if(currentStep >= 0) {
+<div class="progress-container">
+
+    Here I want to have five small icons that show progress.
+
+</div>
+
+
+<div class="stepper-indicator">
+
+  
+
+</div>
+
+
+<!--This should show highlighted for done and awaiting a different color
+<div>
+    
+    *ngFor="let step of steps; let i = index"
+    (click)="goToStep(i)"
+    [class.active]="i === currentStep"
+    [class.completed]="i < currentStep"
+    >
+
+    {{i + 1}}. {{step}}
+
+    
+</div>-->
+
+<div class="stepper-content">
+
+    @switch (currentStep) {
+    
+    @case (0) {
+        <div class="form-card">
+        <app-personal-information [form]="personalForm" ></app-personal-information>
+      </div>
+    }
+
+    @case (1) {
+
+     <div class="from-card">
+        <app-professional-qualifications [form]="professionalForm"></app-professional-qualifications>
+      </div>
+    }
+
+    @case (2) {
+        <div class="form-card">
+        <app-skills-availability [form]="skillslForm" ></app-skills-availability>
+        </div>
+    }
+
+    @case (3) {
+        <div class="form-card">
+           <app-verifications-documents [form]="documentsForm" ></app-verifications-documents>
+        </div>
+    }
+
+    @case (4) {
+        <div>
+            <app-review-submit></app-review-submit>
+    
+        </div>
+    }
+
+    
+
+  }
+
+
+</div>
+
+<!--Navigation buttons-->
+<div class="nav-buttons">
+    <button (click)="prevStep()" [disabled]="currentStep === -1">Back</button>
+
+    @if (currentStep < steps.length - 1) {
+    <button  (click)="nextStep()">Next</button>
+    }
+
+    @if (currentStep === steps.length -1) {
+    <button (click)="submit()" >Finish</button>}
+
+</div>
+
+
+
+}
+
