@@ -1,28 +1,55 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup, ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormGroup,  } from "@angular/forms";
 
 @Component({
   selector: 'app-business-information',
-  imports: [ɵInternalFormsSharedModule, CommonModule],
+  imports: [CommonModule],
   template: `
 
+  <div class="form-label">
   <label>Business Name</label>
   <input type="text" formControlName="businessName">
+  </div>
 
-   <label>Business registration number</label>
+  <div class="form-label">
+    <label>Business registration number</label>
   <input type="text" formControlName="businessRegNumber">
+</div>
 
-  <label>Business License Number</label>
+  <div class="form-label">
+    <label>Business License Number</label>
   <input type="text" formControlName="businessLicenseNumber">
-
+</div>
+<div class="form-label">
    <label>Physical Business Address </label>
   <input type="text" formControlName="physicalBusinessAddress">
+</div>
 
-   <label>Business Email Address</label>
+   <div class="form-label">
+    <label>Business Email Address</label>
   <input type="email" formControlName="businessEmailAddress">
-
+  <div>
   `,
+  styles:[`
+    
+    .form-label{
+      display:flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+
+    .form-label label{
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+
+    .form-label input{
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    `]
  
 })
 export class BusinessInformation{
