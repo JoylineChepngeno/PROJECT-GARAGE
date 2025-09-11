@@ -3,22 +3,22 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { OperationalDetails } from "./operational-details";
 import { BusinessInformation } from "./business-information";
 import { FinancialInfo } from "./financial-info";
-import { ServiceDetails } from "../../car-owner/car-owner-registration/service-history";
+import {Services} from "./services"
 import { VerificationDocs } from "./verification-docs";
 import { ReviewSubmit } from "./review-submit";
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-garage-admin-registration',
-  imports: [ CommonModule,ReactiveFormsModule, OperationalDetails, BusinessInformation, FinancialInfo, ServiceDetails, VerificationDocs, ReviewSubmit],
+  imports: [ CommonModule,ReactiveFormsModule, OperationalDetails, BusinessInformation, FinancialInfo, Services, VerificationDocs, ReviewSubmit],
   templateUrl: './garage-admin-registration.html',
   styleUrl: './garage-admin-registration.css'
 })
 export class GarageAdminRegistration implements OnInit {
 
   form: FormGroup;
-  currentStep = -1;
-  maxSteps = 6;
+  currentStep = 0;
+  maxSteps = 7;
   steps=['Business Information', 'Operational Details', 'Services','Verification Documents', 'Financial Information' ,'Review and submit' ]
 
   constructor(private garageform: FormBuilder){
@@ -63,6 +63,8 @@ export class GarageAdminRegistration implements OnInit {
       }),
 
       review: this.garageform.group({
+        review: ['', Validators.required]
+
 
       })
 
@@ -117,7 +119,7 @@ export class GarageAdminRegistration implements OnInit {
 
 
  nextStep(){
-    if(this.currentStep < this.maxSteps - 1) this.currentStep++;
+    if(this.currentStep < this.maxSteps - 1) {this.currentStep++};
   }
 
 
@@ -146,7 +148,7 @@ export class GarageAdminRegistration implements OnInit {
   submit(){
     if (this.form.valid){
       console.log('Final Submission', this.form.value)
-      localStorage.removeItem('ownerSetup'); //clear after submission
+      localStorage.removeItem('garageSetup'); //clear after submission
     //todo: send to backend
     } else{
       alert('Please complete all required fields')
