@@ -51,7 +51,7 @@ export class MechanicRegistration implements OnInit {
        }),
 
        documents:this.mechanicRegister.group({
-        nationalID:['', Validators.required],
+        nationalIDPic:['', Validators.required],
         professionalCertfificate:['',Validators.required],
         anyRelevantCertificate: [''],
         policeClearanceCertficate:['', Validators.required]
