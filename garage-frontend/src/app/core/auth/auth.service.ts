@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { handleApiError } from '../utils/error-handler';
 import { StorageService } from '../utils/storageservice';
+import { Environment } from '../../../environment/environment';
 
 ///re look above and below
 
@@ -46,7 +47,7 @@ export class AuthService {
   private tokenKey = 'token';
   private roleToken = 'role';
   private nameKey = 'firstname';
-  private apiURL = 'http://10.20.33.60:8083';
+  private apiURL = Environment.url;
   private welcome ='';
 
   constructor( private http: HttpClient,

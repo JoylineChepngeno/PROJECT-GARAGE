@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Environment } from '../../../environment/environment';
 
 export interface CarOwnerSetupRequest {
   profilePic?: File | string;
@@ -23,7 +24,7 @@ export interface CarOwnerSetupRequest {
 })
 export class CarOwnerdetails {
 
-  private apiURL = 'http://10.20.33.92:8083/carOwner/create';
+  private apiURL = Environment.url;
 
    constructor( private http: HttpClient) {}
 
@@ -48,7 +49,7 @@ export class CarOwnerdetails {
 
 
 
-    return this.http.post(`${this.apiURL}`, formData);
+    return this.http.post(`${this.apiURL}/carOwner/create`, formData);
   }
 
    }

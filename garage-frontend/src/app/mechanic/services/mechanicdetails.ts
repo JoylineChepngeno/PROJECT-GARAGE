@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Environment } from '../../../environment/environment';
 
 export interface MechanicPersonalInfo {
   profilePic?: File | null; // optional since not everyone uploads
@@ -43,7 +44,7 @@ export interface MechanicRegistrationData {
 })
 export class Mechanicdetails {
 
-  private apiURL = 'HTTP/YEEES'
+  private apiURL = Environment.url
 
   constructor( private http: HttpClient) {}
 
