@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
+import { handleApiError } from '../utils/error-handler';
+import { StorageService } from '../utils/storageservice';
 
 ///re look above and below
 
@@ -10,94 +12,123 @@ export interface LoginResponse{
   token: string;
   role: string;
   firstname?: string;
-
-
+  detailsCompleted: boolean;
 }
+
+export interface LoginRequest{
+  email: string;
+  password: string;
+}
+
 
 export interface RegisterResponse{
 
   message: string;
   token?: string;
   role?: string;
-  //why no firstname here
-
-
 }
 
-
+export interface RegisterRequest{
+  firstnmae: string;
+  secondname: string;
+  email:string;
+  password: string;
+  confirmPassword: string;
+  phoneNumber: string,
+  role:string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private tokenKey = 'authToken';
+  private tokenKey = 'token';
   private roleToken = 'role';
   private nameKey = 'firstname';
-  private apiURL = 'http://10.20.33.92:8083';
+  private apiURL = 'http://10.20.33.60:8083';
   private welcome ='';
 
-  constructor( private http: HttpClient){}
+  constructor( private http: HttpClient,
+               private storageService: StorageService
+
+  ){}
 
  
   // --- REAL LOGIN ---
-  login(email: string, password: string): Observable<LoginResponse> {
-    const body = { email, password };
-
-    return this.http.post<LoginResponse>(`${this.apiURL}/users/login`, body).pipe(
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiURL}/users/login`, request).pipe(
       tap(res => {
-        localStorage.setItem(this.tokenKey, res.token);
-        localStorage.setItem(this.roleToken, res.role);
+        this.storageService.setItem(this.tokenKey, res.token);
+        this.storageService.setItem(this.roleToken, res.role);
+        this.storageService.setItem('detailsCompleted', res.detailsCompleted ? 'true' : 'false');
 
         //put firsname as optional (experiment)
         if (res.firstname) {
-          localStorage.setItem(this.nameKey, res.firstname);
+          this.storageService.setItem(this.nameKey, res.firstname);
           this.welcome = `Welcome back, ${res.firstname}`
         }
       }),
-      catchError(err => {
-        console.error('Login error:', err);
-        // Customize error message
-        return throwError(() => new Error(err.error?.message || 'Login failed. Please try again.'));
-      })
+      catchError(handleApiError)
     );
   }
   
   
   // --- REAL REGISTER ---
-  register(userData: any): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiURL}/users`, userData).pipe(
+  register(userData: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiURL}/users/register`, userData).pipe(
       tap(res => {
         //optional: save token if backend returns one
         if (res.token) {
-          localStorage.setItem(this.tokenKey, res.token);
-          if (res.role) localStorage.setItem(this.roleToken, res.role);
+          this.storageService.setItem(this.tokenKey, res.token);
+          if (res.role) this.storageService.setItem(this.roleToken, res.role);
         }
       }),
-      catchError(err => {
-        console.error(err);
-        return throwError(() => new Error(err.error?.message || 'Registration failed. Try again later.'));
-      })
+      catchError(handleApiError)
+
     );
   }
 
   // --- LOGOUT ---
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.roleToken);
-    localStorage.removeItem(this.nameKey);
+  const token = this.storageService.getItem(this.tokenKey);
+  if (token) {
+    const storageKey = `ownerSetup_${token}`;
+    this.storageService.removeItem(storageKey); // ✅ remove saved form for this user
   }
+
+  // Clear auth info
+  this.storageService.removeItem(this.tokenKey);
+  this.storageService.removeItem(this.roleToken);
+ this.storageService.removeItem(this.nameKey);
+ this.storageService.removeItem('profileData'); // optional
+ this.storageService.removeItem('detailsCompleted'); // optional
+}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+    return !! this.storageService.getItem(this.tokenKey);
   }
 
+
+// check if token is not an empty string  isLoggedIn(): boolean {
+//   const token = this.storageService.getItem(this.tokenKey);
+//   return token !== null && token.trim() !== '';
+// }
+
+
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return this.storageService.getItem(this.tokenKey);
   }
 
   getRole(): string | null {
-    return localStorage.getItem(this.roleToken);
+    return this.storageService.getItem(this.roleToken);
   }
+
+  hasCompletedDetails(): boolean {
+    return this.storageService.getItem('detailsCompleted') === 'true';
+;  }
+
+
+
   }
 

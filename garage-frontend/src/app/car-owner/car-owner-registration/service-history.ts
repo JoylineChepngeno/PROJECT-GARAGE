@@ -1,26 +1,29 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-service-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template:` 
+    <div class="service-history-form" [formGroup]="group">
     <h3>Severity of Past Repairs</h3>
     <p>Select all that apply:</p>
-    <div *ngFor="let option of options; let i =index" class="severity-option">
+    
+  <div *ngFor="let option of options; let i =index" class="severity-option">
     <label>
       <input type="radio" [value]="option" formControlName="severity"> {{ option }}
     </label>
     <p class="option-desc"> {{descriptions[i]}} </p>
+  </div>
 
-    @if(group.get('severity')?.invalid && group.get('severity')?.touched){
-        
-    <div class="error">
-      Please select one option.
+    @if(group.get('severity')?.invalid && (group.get('severity')?.touched || group.get('severity')?.dirty)) {
+  <div class="error">
+    Please select one option.
+  </div>}
     </div>
-    }`,
+  `,
 
     styles: [`
     .severity-option {

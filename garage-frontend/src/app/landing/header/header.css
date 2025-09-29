@@ -1,0 +1,77 @@
+/* Toolbar main*/
+.header-toolbar {
+  position: sticky;
+  z-index: 1000;
+  top: 0px;
+  /* centered + not full screen */
+  margin: 0 auto;
+  width: min(1100px, 90%);
+
+  /* rounded + shadow */
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(73, 70, 70, 0.25);
+
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 72px;
+  color: #0f0e0e;
+}
+
+/* Logo + tagline */
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+.tagline {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.tagline h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.tagline small {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+/* spacer pushes nav to right */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* nav links */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Hover effect for buttons */
+.mat-button, .mat-menu-item {
+  border-radius: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.mat-button:hover, .mat-menu-item:hover {
+  background-color: rgba(243, 168, 124, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+.mobile-only {
+  display: none;
+}
+@media (max-width: 900px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: inline-flex; }
+  .header-toolbar {
+    height: 64px;
+    padding: 0 12px;
+    width: 95%;
+  }
+  .tagline h2 { font-size: 1.1rem; }
+  .tagline small { font-size: 0.7rem; }
+}

@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-review-submit',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
+  <div [formGroup]="group">
   <div class="form-label">
   <label>Review</label>
   <input type="text" formControlName="review">
+</div>
 </div>
   `,
 

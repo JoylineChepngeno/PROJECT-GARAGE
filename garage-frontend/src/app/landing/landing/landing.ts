@@ -4,6 +4,8 @@ import { HeroSection } from "../hero-section/hero-section";
 import { Guide } from "../guide/guide";
 import { Footer } from "../footer/footer";
 
+
+
 @Component({
   selector: 'app-landing',
   imports: [Header, HeroSection, Guide, Footer],
@@ -12,4 +14,5 @@ import { Footer } from "../footer/footer";
 })
 export class Landing {
 
+  
 }

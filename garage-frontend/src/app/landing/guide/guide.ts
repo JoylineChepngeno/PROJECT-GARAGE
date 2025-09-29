@@ -1,25 +1,17 @@
-import { Component } from '@angular/core';
-import { Router} from '@angular/router';
+import { Component} from '@angular/core';
+import {MatCardModule} from '@angular/material/card'
+import { MatDialogModule } from '@angular/material/dialog';
+
+
+
 @Component({
   selector: 'app-guide',
-  imports: [],
+  imports: [MatCardModule,MatDialogModule],
   templateUrl: './guide.html',
   styleUrl: './guide.css'
 })
-export class Guide {
+export class Guide{
 
-    //direct to register
-  constructor(private router: Router){}
-
-  goToRegister(){
-    this.router.navigate(['/register']);
     
-  }
-
-  //direct to log in
-
-  goToLogIn(){
-    this.router.navigate(['/login'])
-  }
 
 }

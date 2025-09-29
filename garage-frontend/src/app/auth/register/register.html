@@ -1,6 +1,21 @@
 <div class="page-wrapper">
-  <h2>Select your role!</h2>
   <div class="form-container">
+
+    <!-- Success message -->
+@if (successMessage) {
+  <p style="color: green; font-weight: bold; margin-bottom: 10px;">
+    {{ successMessage }}
+  </p>
+}
+
+<!-- Error message -->
+@if (errorMessage) {
+  <p style="color: rgb(31, 2, 2); font-weight: bold; margin-bottom: 10px;">
+    {{ errorMessage }}
+  </p>
+}
+
+
     <form [formGroup]="registerForm" (ngSubmit)="registerOnSubmit()">
 
       <!-- Row: First & Second Name -->

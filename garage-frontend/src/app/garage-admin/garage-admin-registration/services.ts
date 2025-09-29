@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component,Input } from '@angular/core';
-import { FormGroup} from "@angular/forms";
+import { FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-services',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
+  <div [formGroup]="group">
 <div class="form-label">
     <label>Service Categories</label>
   <input formControlName="serviceCategories">
@@ -14,7 +15,7 @@ import { FormGroup} from "@angular/forms";
   <div class="form-label">
     <label> Specialised Services</label>
   <input formControlName="specialised Services">
-  
+</div>
   `,
 
   styles:[`

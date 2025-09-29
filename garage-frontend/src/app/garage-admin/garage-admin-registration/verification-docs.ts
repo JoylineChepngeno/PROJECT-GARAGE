@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-verification-docs',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
-
+  <div [formGroup]="group">
   <div class="form-label">
     <label>Business License </label>
-  <input type="file">
+  <input type="file" (change)="onFileSelected($event, 'businessLicense')">
+  </div>
+
+    <div class="form-label">
+    <label>Professional Certificate </label>
+  <input type="file" (change)="onFileSelected($event, 'professionalCertificate')">
   </div>
 
  <div class="form-label">
    <label>Facility Photos</label>
-  <input>
+  <input type="file" (change)="onFileSelected($event, 'facilityPhotos')">
  </div>
+</div>
   
 
   
@@ -44,5 +50,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class VerificationDocs {
   @Input() group!: FormGroup<any>
+
+ onFileSelected(event: any, controlName: string) {
+    const file: File = event.target.files[0] ?? null;
+    this.group.get(controlName)?.setValue(file);
+  }
 
 }

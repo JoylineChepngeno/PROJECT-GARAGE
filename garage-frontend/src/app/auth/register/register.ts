@@ -3,6 +3,7 @@ import { ReactiveFormsModule,FormGroup,FormBuilder, Validators } from '@angular/
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+
 @Component({
   selector: 'app-register',
   imports: [CommonModule,ReactiveFormsModule],
@@ -13,7 +14,9 @@ export class Register {
 
   //Register form
   registerForm: FormGroup;
-  message = "";
+  errorMessage: string | null = null;
+  successMessage: string | null = null; 
+  //message = "";
   isLoading = false;
 
 
@@ -37,45 +40,53 @@ export class Register {
 
   }
 
-  
 
   // Form Submission
   registerOnSubmit(){
 
-    console.log('Handler called')
+    this.errorMessage = null;
+    this.successMessage = null;
+
 
     if( this.registerForm.valid){
       const formData = this.registerForm.value;
 
-      //check what I am sending 
-      console.log('Submitting data:',formData)
-
       //client side check
 
       if(formData.password !== formData.confirmPassword){
-        this.message = 'Passwords do not match';
+        this.errorMessage = 'Passwords do not match';
         return;
       }
 
-      this.message= "Registerrrrr";
+      this.errorMessage = null;
+      this.successMessage= null;
       this.isLoading = true;//spinner
+
+      //Disable while submitting
+      this.registerForm.disable();
 
       this.authService.register(formData).subscribe({
         next: (res) => {
-          this.message = res.message || 'Registration successful!';
-          console.log("registered successfully")
+          this.successMessage = res.message || 'Registration successful! Redirecting';
+          this.errorMessage = null;
           this.isLoading = false;
 
-          //after registration direct user to login
-          this.router.navigate(['/login']);
+          //rseset form
+          this.registerForm.reset();
+          this.registerForm.enable();
+
+          //after registration direct user to login after short delay
+          setTimeout(() => this.router.navigate(['/login']), 1500);
         },
         error: (err) => {
-          this.message = err.message;
-          this.isLoading = false;}
+          this.errorMessage = err.message || 'Registration failed. Please try again.';
+          this.isLoading = false;
+          this.registerForm.enable();
+        }
       });
     }
     else{
-      this.message = 'Please fll in all required fields correctly.';
+      this.errorMessage = 'Please fill in all required fields correctly.';
     }
     
   }
@@ -89,11 +100,5 @@ export class Register {
 }
 }
 
-
-  
-
-//  goToRegister(role: string){
-  //  this.router.navigate([`/auth/register/${role.toLowerCase()}`])}
-  //
 
 

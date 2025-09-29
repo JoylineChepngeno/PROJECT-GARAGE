@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup, } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule, } from "@angular/forms";
 
 @Component({
   selector: 'app-operational-details',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
-
+<div [formGroup]="group">
   <div class="form-field">
     <label>Years in Operation</label>
     <input type="text" formControlName="yearsInOperation" >
@@ -21,7 +21,7 @@ import { FormGroup, } from "@angular/forms";
     <label>24/7</label>
     <input type="text" formControlName="twentyFourHours">
   </div>
-
+</div>
   `,
 
   styles: [`

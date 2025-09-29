@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormGroup,  } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule,  } from "@angular/forms";
 
 @Component({
   selector: 'app-business-information',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
-
+  <div [formGroup]="group">
   <div class="form-label">
   <label>Business Name</label>
   <input type="text" formControlName="businessName">
@@ -29,7 +29,8 @@ import { FormGroup,  } from "@angular/forms";
    <div class="form-label">
     <label>Business Email Address</label>
   <input type="email" formControlName="businessEmailAddress">
-  <div>
+  </div>
+  </div>
   `,
   styles:[`
     

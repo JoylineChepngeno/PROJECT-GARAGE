@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input} from '@angular/core';
-import { FormGroup,  } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule,  } from "@angular/forms";
 
 
 @Component({
   selector: 'app-financial-info',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
+  <div [formGroup]="group">
   <div class="form-field">
   <label>MPESA PayBill</label>
   <input type="text" formControlName="mpesaPayBill">
@@ -16,7 +17,7 @@ import { FormGroup,  } from "@angular/forms";
   <label>MPESA Till</label>
   <input type="text" formControlName="mpesaTill">
   <div>
-  
+</div>
   `,
 
   styles: [`

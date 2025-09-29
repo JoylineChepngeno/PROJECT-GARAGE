@@ -1,2 +1,63 @@
-<p>GARAGE</p>
-<h5>Welcome to Garage Service Platform 🚗🔧</h5>
+<mat-toolbar color="primary" class="header-toolbar">
+
+      <div class="logo-section">
+    <!-- <img src="assets/logo.png" alt="AUTO Logo" class="logo" /> -->
+    <div class="tagline">
+      <h2>AUTO</h2>
+      <small>Anything Auto, everything auto</small>
+    </div>
+  </div>
+
+    <span class="spacer"></span>
+
+    <nav class="nav-links desktop-only">
+
+  <button matButton matFab extended routerLink="''">
+        <mat-icon>home</mat-icon>
+          Home
+      </button>
+
+        
+        <button matButton [matMenuTriggerFor]="carowner" > CAR OWNER </button>
+        <mat-menu #carowner>
+          <button routerLink="/roadside" mat-menu-item>I need road-side help</button>
+          <button mat-menu-item>I need repair services</button>
+          <button mat-menu-item> I need maintenace</button>
+          <button mat-menu-item> I need fuel</button>
+        </mat-menu>
+
+      
+         
+            <button matButton > MY GARAGE</button>
+            <button matButton> MECHANIC</button>
+        
+
+      
+        <button matButton [matMenuTriggerFor]="services" > SERVICES </button>
+      
+      <mat-menu #services>
+        <button mat-menu-item>Emergency</button>
+        <button mat-menu-item>Maintenance</button>
+        <button mat-menu-item>Garages Nearby</button>
+        <button mat-menu-item>Fuel Station</button>
+      </mat-menu>
+
+    </nav>
+
+  <button [matMenuTriggerFor]="menuitems" mat-icon-button class="mobile-only">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menuitems>
+
+    <button mat-menu-item routerLink="/home">Home</button>
+    <button mat-menu-item routerLink="/carowner">Car Owner</button>
+    <button mat-menu-item  routerLink="/garage">My Garage</button>
+    <button mat-menu-item  routerLink="/mechanic">Mechanic</button>
+    <button mat-menu-item routerLink="/services">Services</button>
+
+  </mat-menu>
+
+</mat-toolbar>
+
+

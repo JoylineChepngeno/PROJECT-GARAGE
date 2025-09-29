@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { PersonalInformation } from "./personal-information";
-import { fromReadableStreamLike } from 'rxjs/internal/observable/innerFrom';
+//import { fromReadableStreamLike } from 'rxjs/internal/observable/innerFrom';
 import { ProfessionalQualifications } from './professional-qualifications';
 import { ReviewSubmit } from './review-submit';
 import { SkillsAvailability } from './skills-availability';
 import { VerificationDocuments } from './verification-documents';
+//import { Mechanicdetails } from '../services/mechanicdetails';
+import { GenericForm } from '../../core/utils/generic-form';
+import { StorageService } from '../../core/utils/storageservice';
 
 @Component({
   selector: 'app-mechanic-registration',
@@ -21,9 +25,14 @@ export class MechanicRegistration implements OnInit {
   form: FormGroup;
   currentStep = -1;
   maxSteps= 5;
+  //objects so that I can add icons
   steps = ['Personal Information', 'Professional Qualification', 'Skills and Availability', 'Verification Documents', 'Review and Submit']
 
-  constructor(private mechanicRegister:FormBuilder){
+  constructor(private mechanicRegister:FormBuilder,
+              private router: Router,
+              private genericForm: GenericForm,
+              private storageService: StorageService
+             ){
 
     this.form=this.mechanicRegister.group({
       personal:this.mechanicRegister.group({
@@ -58,9 +67,9 @@ export class MechanicRegistration implements OnInit {
 
        }),
 
-       review: this.mechanicRegister.group({
-        fromReadableStreamLike
-       })
+       review: this.mechanicRegister.group({ })
+        //fromReadableStreamLike
+      
 
     });
 
@@ -85,8 +94,7 @@ get documentsForm(): FormGroup {
 
 ngOnInit(){
   //load saved progess
-  if(typeof localStorage !== 'undefined'){
-   const saved = localStorage.getItem('mechanicSetup');
+   const saved = this.storageService.getItem('mechanicSetup');
    if (saved){
     this.form.patchValue(JSON.parse(saved))
    }
@@ -94,9 +102,9 @@ ngOnInit(){
 
    // Save progress as user types
   this.form.valueChanges.subscribe(value => {
-    localStorage.setItem('mechanicSetup', JSON.stringify(value));
+    this.storageService.setItem('mechanicSetup', JSON.stringify(value));
   });
-}
+
   
 }
 
@@ -129,9 +137,15 @@ ngOnInit(){
 
   submit(){
     if (this.form.valid){
-      console.log('Final Submission', this.form.value)
-     localStorage.removeItem('ownerSetup'); //clear after submission
-    //todo: send to backend
+       this.genericForm.submitForm('http://10.20.33.60:8083/mechanics', this.form.value).subscribe({
+      next: (res) => {
+        console.log('Mechanic details saved:', res);
+        this.storageService.removeItem('mechanicSetup');
+        this.storageService.setItem('detailsCompleted', 'true');
+        this.router.navigate(['/mechanic-dashboard']);
+      }
+      
+    });
     } else{
       alert('Please complete all required fields')
     }

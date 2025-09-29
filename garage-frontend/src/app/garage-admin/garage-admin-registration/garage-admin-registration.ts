@@ -7,6 +7,10 @@ import {Services} from "./services"
 import { VerificationDocs } from "./verification-docs";
 import { ReviewSubmit } from "./review-submit";
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+//import { GarageAdminDetails } from '../services/garage-admin-details';
+import { GenericForm } from '../../core/utils/generic-form';
+import { StorageService } from '../../core/utils/storageservice';
 
 @Component({
   selector: 'app-garage-admin-registration',
@@ -21,7 +25,11 @@ export class GarageAdminRegistration implements OnInit {
   maxSteps = 7;
   steps=['Business Information', 'Operational Details', 'Services','Verification Documents', 'Financial Information' ,'Review and submit' ]
 
-  constructor(private garageform: FormBuilder){
+  constructor(private garageform: FormBuilder,
+              private router: Router,
+              private genericForm: GenericForm,
+              private storageService: StorageService
+            ){
 
     this.form = this.garageform.group({
       business : this.garageform.group({
@@ -101,17 +109,17 @@ export class GarageAdminRegistration implements OnInit {
 
   ngOnInit(): void {
 
-    if(typeof localStorage !== 'undefined'){
+    if(typeof this.storageService !== 'undefined'){
     
     //load saved progess
-   const saved = localStorage.getItem('garageSetup');
+   const saved = this.storageService.getItem('garageSetup');
    if (saved){
     this.form.patchValue(JSON.parse(saved))
    }
 
    // Save progress as user types
   this.form.valueChanges.subscribe(value => {
-    localStorage.setItem('garageSetup', JSON.stringify(value));
+    this.storageService.setItem('garageSetup', JSON.stringify(value));
   });
     
   }}
@@ -147,9 +155,20 @@ export class GarageAdminRegistration implements OnInit {
 
   submit(){
     if (this.form.valid){
-      console.log('Final Submission', this.form.value)
-      localStorage.removeItem('garageSetup'); //clear after submission
-    //todo: send to backend
+       this.genericForm.submitForm('http://10.20.33.60:8083/garages', this.form.value).subscribe({
+        next: (res) => {
+        console.log('Garage Admin details saved:', res);
+
+        // clear local storage
+        this.storageService.removeItem('garageSetup');
+
+        // mark details as completed for auth guard
+        this.storageService.setItem('detailsCompleted', 'true');
+
+        // redirect to dashboard
+        this.router.navigate(['/garage-admin-dashboard']);
+      },
+       });
     } else{
       alert('Please complete all required fields')
     }
